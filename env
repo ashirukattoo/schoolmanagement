@@ -32,8 +32,8 @@ app.baseURL = ''
 
 database.default.hostname = localhost
 database.default.database = lyamahoro
-database.default.username = nikwo
-database.default.password = Lyamahoro1988@Sec
+database.default.username = root
+database.default.password = password
 database.default.DBDriver = MySQLi
 database.default.DBPrefix =
 database.default.port = 3306
@@ -71,7 +71,7 @@ session.savePath = null
 #--------------------------------------------------------------------
 # CREDENCIALS 
 #--------------------------------------------------------------------
-beem.apiKey = bdc11a9a7ea64640
-beem.senderId = LYAMAHORO S
-beem.secretKey = NDM1ODU5YjA1NDIyNWQ4ZTBkYjkzOGQyYjRlMzBlNzM3YTU3NDBmM2RmZTI3NTY4NWU2YTUxMmQ3MmVjZThkMw==
+beem.apiKey = 
+beem.senderId = LYAMAHORO
+beem.secretKey = secretekey
 
