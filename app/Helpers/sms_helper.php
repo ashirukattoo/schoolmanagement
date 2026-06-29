@@ -2,9 +2,9 @@
 
 if (!function_exists('send_sms_api')){
     function send_sms_api($phone, $message) {
-        $api_key = 'bdc11a9a7ea64640';
-        $sender_id = 'LYAMAHORO S';
-        $secret_key = 'NDM1ODU5YjA1NDIyNWQ4ZTBkYjkzOGQyYjRlMzBlNzM3YTU3NDBmM2RmZTI3NTY4NWU2YTUxMmQ3MmVjZThkMw==';
+        $api_key = ' ';
+        $sender_id = 'LYAMAHORO';
+        $secret_key = '';
 
         // NORMALIZE PHONE NUMBER
         $phone = trim($phone);
