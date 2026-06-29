@@ -1,0 +1,509 @@
+mysql> describe academicyears; describe attendance; describe classes; describe compiledresults; describe deductions; describe employee_deductions; describe disctricts; describe exam_subject_summary; describe exams; describe guardians; describe payroll_item_deductions; describe payroll_items; describe payroll_runs; describe rawresults; describe regions; describe roles; describe routes; describe stations; describe route_stations; describe salary_grades; describe settings; describe sms_logs; describe sms_queue; describe streams; describe streets; describe student_promotions; describe student_routestation; describe students; describe subjects; describe terms; describe timetable; describe tour_feedbacks; describe tour_routes; describe tours; describe vehicles; describe wards;
++-----------+-----------------------------------------+------+-----+-------------------+-----------------------------+
+| Field     | Type                                    | Null | Key | Default           | Extra                       |
++-----------+-----------------------------------------+------+-----+-------------------+-----------------------------+
+| ayID      | varchar(10)                             | NO   | PRI | NULL              |                             |
+| ayName    | varchar(25)                             | NO   |     | NULL              |                             |
+| ayLevel   | varchar(10)                             | NO   |     | NULL              |                             |
+| ayStart   | date                                    | NO   |     | NULL              |                             |
+| ayEnd     | date                                    | NO   |     | NULL              |                             |
+| ayCreated | datetime                                | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED           |
+| ayUpdated | datetime                                | YES  |     | NULL              | on update CURRENT_TIMESTAMP |
+| ayStatus  | enum('Current','Previous','Next','Old') | NO   |     | Next              |                             |
++-----------+-----------------------------------------+------+-----+-------------------+-----------------------------+
+8 rows in set (0.00 sec)
+
++-------------+----------------------------------+------+-----+-------------------+-----------------------------+
+| Field       | Type                             | Null | Key | Default           | Extra                       |
++-------------+----------------------------------+------+-----+-------------------+-----------------------------+
+| id          | int                              | NO   | PRI | NULL              | auto_increment              |
+| student_id  | int                              | YES  | MUL | NULL              |                             |
+| stream_id   | int                              | YES  | MUL | NULL              |                             |
+| session     | enum('Morning','Noon','Evening') | NO   |     | Morning           |                             |
+| date        | date                             | YES  |     | NULL              |                             |
+| term_id     | varchar(10)                      | NO   |     | NULL              |                             |
+| status      | enum('I','A','P','S')            | YES  |     | NULL              |                             |
+| created_at  | timestamp                        | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED           |
+| updated_at  | timestamp                        | YES  |     | NULL              | on update CURRENT_TIMESTAMP |
+| recorded_by | int                              | NO   |     | NULL              |                             |
++-------------+----------------------------------+------+-----+-------------------+-----------------------------+
+10 rows in set (0.00 sec)
+
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| cid     | int         | NO   | PRI | NULL    | auto_increment |
+| named   | varchar(50) | NO   |     | NULL    |                |
+| short   | varchar(10) | NO   |     | NULL    |                |
+| numeral | tinyint     | NO   |     | NULL    |                |
+| level   | int         | NO   |     | 1       |                |
+| created | datetime    | YES  |     | NULL    |                |
+| updated | datetime    | YES  |     | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
++--------------+-------------------------------------+------+-----+----------+----------------+
+| Field        | Type                                | Null | Key | Default  | Extra          |
++--------------+-------------------------------------+------+-----+----------+----------------+
+| crID         | int                                 | NO   | PRI | NULL     | auto_increment |
+| exam_id      | varchar(11)                         | NO   | MUL | NULL     |                |
+| student_id   | int                                 | NO   | MUL | NULL     |                |
+| crResults    | text                                | NO   |     | NULL     |                |
+| crTotal      | float(6,2)                          | NO   |     | NULL     |                |
+| crAverage    | decimal(5,2)                        | NO   |     | NULL     |                |
+| crPoints     | int                                 | NO   |     | NULL     |                |
+| crDivision   | char(3)                             | NO   |     | NULL     |                |
+| crGPA        | decimal(5,3)                        | YES  |     | NULL     |                |
+| crgpa_class  | varchar(20)                         | YES  |     | NULL     |                |
+| crPosition   | int                                 | YES  |     | NULL     |                |
+| crRemarks    | varchar(45)                         | NO   |     | NULL     |                |
+| crMaoni      | varchar(45)                         | YES  |     | NULL     |                |
+| crCreated    | datetime                            | NO   |     | NULL     |                |
+| crCompiledBy | int                                 | NO   | MUL | NULL     |                |
+| raUpdated    | datetime                            | YES  |     | NULL     |                |
+| raStatus     | enum('sent','forwarded','compiled') | NO   |     | compiled |                |
++--------------+-------------------------------------+------+-----+----------+----------------+
+17 rows in set (0.00 sec)
+
++-----------------+----------------------------+------+-----+-------------------+-------------------+
+| Field           | Type                       | Null | Key | Default           | Extra             |
++-----------------+----------------------------+------+-----+-------------------+-------------------+
+| deductionID     | int                        | NO   | PRI | NULL              | auto_increment    |
+| deduction_name  | varchar(100)               | NO   |     | NULL              |                   |
+| deduction_code  | varchar(20)                | YES  | UNI | NULL              |                   |
+| deduction_type  | enum('percentage','fixed') | NO   |     | NULL              |                   |
+| deduction_value | decimal(10,2)              | NO   |     | NULL              |                   |
+| applies_to      | enum('basic','gross')      | NO   |     | NULL              |                   |
+| is_statutory    | tinyint(1)                 | YES  |     | 0                 |                   |
+| is_active       | tinyint(1)                 | YES  |     | 1                 |                   |
+| created_at      | datetime                   | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-----------------+----------------------------+------+-----+-------------------+-------------------+
+9 rows in set (0.00 sec)
+
++--------------+---------------+------+-----+-------------------+-------------------+
+| Field        | Type          | Null | Key | Default           | Extra             |
++--------------+---------------+------+-----+-------------------+-------------------+
+| id           | int           | NO   | PRI | NULL              | auto_increment    |
+| empID        | int           | NO   | MUL | NULL              |                   |
+| deductionID  | int           | NO   | MUL | NULL              |                   |
+| custom_value | decimal(10,2) | YES  |     | NULL              |                   |
+| is_active    | tinyint(1)    | YES  |     | 1                 |                   |
+| created_at   | datetime      | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++--------------+---------------+------+-----+-------------------+-------------------+
+6 rows in set (0.00 sec)
+
++-----------+--------------+------+-----+---------+----------------+
+| Field     | Type         | Null | Key | Default | Extra          |
++-----------+--------------+------+-----+---------+----------------+
+| disID     | int          | NO   | PRI | NULL    | auto_increment |
+| disName   | varchar(100) | NO   |     | NULL    |                |
+| region_id | int          | NO   | MUL | NULL    |                |
++-----------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
++--------------+--------------+------+-----+-------------------+-------------------+
+| Field        | Type         | Null | Key | Default           | Extra             |
++--------------+--------------+------+-----+-------------------+-------------------+
+| id           | int          | NO   | PRI | NULL              | auto_increment    |
+| exam_id      | varchar(11)  | YES  |     | NULL              |                   |
+| subject_id   | int          | YES  |     | NULL              |                   |
+| reg          | int          | YES  |     | NULL              |                   |
+| seat         | int          | YES  |     | NULL              |                   |
+| abs          | int          | YES  |     | NULL              |                   |
+| grades_json  | json         | YES  |     | NULL              |                   |
+| pass         | int          | YES  |     | NULL              |                   |
+| pass_percent | decimal(5,2) | YES  |     | NULL              |                   |
+| gpa          | decimal(5,4) | YES  |     | NULL              |                   |
+| grade        | varchar(2)   | YES  |     | NULL              |                   |
+| level        | varchar(10)  | YES  |     | NULL              |                   |
+| created_at   | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++--------------+--------------+------+-----+-------------------+-------------------+
+13 rows in set (0.00 sec)
+
++------------+----------------------------------------------------+------+-----+-------------------+-----------------------------+
+| Field      | Type                                               | Null | Key | Default           | Extra                       |
++------------+----------------------------------------------------+------+-----+-------------------+-----------------------------+
+| exID       | varchar(11)                                        | NO   | PRI | NULL              |                             |
+| exName     | varchar(75)                                        | NO   |     | NULL              |                             |
+| class_id   | int                                                | NO   | MUL | NULL              |                             |
+| term_id    | varchar(10)                                        | NO   |     | ACTM0001          |                             |
+| exSubjects | text                                               | NO   |     | NULL              |                             |
+| exCreated  | datetime                                           | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED           |
+| exUpdated  | datetime                                           | YES  |     | NULL              | on update CURRENT_TIMESTAMP |
+| exStatus   | enum('progress','old','next','canceled','current') | NO   |     | next              |                             |
++------------+----------------------------------------------------+------+-----+-------------------+-----------------------------+
+8 rows in set (0.00 sec)
+
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| guID         | int          | NO   | PRI | NULL    | auto_increment |
+| guName       | varchar(100) | NO   |     | NULL    |                |
+| guSex        | varchar(10)  | NO   |     | NULL    |                |
+| guDob        | date         | YES  |     | NULL    |                |
+| guOccupasion | varchar(100) | NO   |     | NULL    |                |
+| guEmail      | varchar(100) | NO   | UNI | NULL    |                |
+| guPassword   | varchar(255) | NO   |     | NULL    |                |
+| guRegisterd  | datetime     | YES  |     | NULL    |                |
+| guStatus     | varchar(50)  | NO   |     | NULL    |                |
+| phone        | varchar(15)  | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+10 rows in set (0.00 sec)
+
++-----------------+---------------+------+-----+-------------------+-------------------+
+| Field           | Type          | Null | Key | Default           | Extra             |
++-----------------+---------------+------+-----+-------------------+-------------------+
+| id              | int           | NO   | PRI | NULL              | auto_increment    |
+| payroll_item_id | int           | NO   | MUL | NULL              |                   |
+| deduction_name  | varchar(100)  | YES  |     | NULL              |                   |
+| amount          | decimal(12,2) | YES  |     | NULL              |                   |
+| created_at      | datetime      | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-----------------+---------------+------+-----+-------------------+-------------------+
+5 rows in set (0.00 sec)
+
++---------------------+---------------+------+-----+-------------------+-------------------+
+| Field               | Type          | Null | Key | Default           | Extra             |
++---------------------+---------------+------+-----+-------------------+-------------------+
+| item_id             | int           | NO   | PRI | NULL              | auto_increment    |
+| payroll_id          | int           | NO   | MUL | NULL              |                   |
+| employee_id         | int           | NO   | MUL | NULL              |                   |
+| basic_salary        | decimal(12,2) | YES  |     | 0.00              |                   |
+| housing_allowance   | decimal(12,2) | YES  |     | 0.00              |                   |
+| transport_allowance | decimal(12,2) | YES  |     | 0.00              |                   |
+| medical_allowance   | decimal(12,2) | YES  |     | 0.00              |                   |
+| other_allowance     | decimal(12,2) | YES  |     | 0.00              |                   |
+| gross_salary        | decimal(12,2) | YES  |     | 0.00              |                   |
+| total_deductions    | decimal(12,2) | YES  |     | 0.00              |                   |
+| net_salary          | decimal(12,2) | YES  |     | 0.00              |                   |
+| created_at          | datetime      | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++---------------------+---------------+------+-----+-------------------+-------------------+
+12 rows in set (0.00 sec)
+
++---------------+---------------------------------+------+-----+-------------------+-------------------+
+| Field         | Type                            | Null | Key | Default           | Extra             |
++---------------+---------------------------------+------+-----+-------------------+-------------------+
+| payroll_id    | int                             | NO   | PRI | NULL              | auto_increment    |
+| payroll_month | int                             | NO   | MUL | NULL              |                   |
+| payroll_year  | int                             | NO   |     | NULL              |                   |
+| status        | enum('Draft','Approved','Paid') | YES  |     | Draft             |                   |
+| processed_by  | int                             | YES  |     | NULL              |                   |
+| processed_at  | datetime                        | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| created_at    | datetime                        | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++---------------+---------------------------------+------+-----+-------------------+-------------------+
+7 rows in set (0.00 sec)
+
++-------------+----------------------------------+------+-----+-------------------+-----------------------------+
+| Field       | Type                             | Null | Key | Default           | Extra                       |
++-------------+----------------------------------+------+-----+-------------------+-----------------------------+
+| raID        | int                              | NO   | PRI | NULL              | auto_increment              |
+| exam_id     | varchar(11)                      | NO   |     | NULL              |                             |
+| student_id  | int                              | NO   | MUL | NULL              |                             |
+| subject_id  | int                              | NO   | MUL | NULL              |                             |
+| raScore     | decimal(5,2)                     | NO   |     | NULL              |                             |
+| raGrade     | char(3)                          | YES  |     | NULL              |                             |
+| raCreated   | datetime                         | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED           |
+| raCreatedBy | int                              | NO   | MUL | NULL              |                             |
+| raUpdated   | datetime                         | YES  |     | NULL              | on update CURRENT_TIMESTAMP |
+| raStatus    | enum('raw','deleted','compiled') | NO   |     | raw               |                             |
++-------------+----------------------------------+------+-----+-------------------+-----------------------------+
+10 rows in set (0.00 sec)
+
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| regID   | int          | NO   | PRI | NULL    | auto_increment |
+| regName | varchar(100) | NO   |     | NULL    |                |
+| regZone | varchar(100) | NO   |     | NULL    |                |
+| regLand | varchar(100) | NO   |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
++----------+--------------------------+------+-----+---------+----------------+
+| Field    | Type                     | Null | Key | Default | Extra          |
++----------+--------------------------+------+-----+---------+----------------+
+| id       | int                      | NO   | PRI | NULL    | auto_increment |
+| roleName | varchar(75)              | NO   |     | unnamed |                |
+| ranked   | int                      | YES  |     | 10      |                |
+| status   | enum('Active','Deleted') | YES  |     | Active  |                |
++----------+--------------------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| rouID      | int          | NO   | PRI | NULL    | auto_increment |
+| rouName    | varchar(150) | NO   |     | NULL    |                |
+| rouStart   | varchar(150) | NO   |     | NULL    |                |
+| rouEnd     | varchar(150) | NO   |     | NULL    |                |
+| rouCreated | datetime     | YES  |     | NULL    |                |
+| rouUpdated | datetime     | YES  |     | NULL    |                |
+| rouStatus  | varchar(50)  | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| staID      | int          | NO   | PRI | NULL    | auto_increment |
+| staName    | varchar(150) | NO   |     | NULL    |                |
+| staGps     | varchar(255) | YES  |     | NULL    |                |
+| staBefore  | int          | YES  |     | NULL    |                |
+| staAfter   | int          | YES  |     | NULL    |                |
+| street_id  | int          | YES  |     | NULL    |                |
+| staCreated | datetime     | YES  |     | NULL    |                |
+| staUpdated | datetime     | YES  |     | NULL    |                |
+| staStatus  | varchar(50)  | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| rsID       | int         | NO   | PRI | NULL    | auto_increment |
+| route_id   | int         | NO   | MUL | NULL    |                |
+| station_id | int         | NO   | MUL | NULL    |                |
+| rsCreated  | datetime    | YES  |     | NULL    |                |
+| rsStatus   | varchar(50) | NO   |     | Active  |                |
++------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
++---------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+| Field               | Type          | Null | Key | Default           | Extra                                         |
++---------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+| grade_id            | int           | NO   | PRI | NULL              | auto_increment                                |
+| grade_name          | varchar(100)  | NO   |     | NULL              |                                               |
+| basic_salary        | decimal(12,2) | NO   |     | 0.00              |                                               |
+| housing_allowance   | decimal(12,2) | YES  |     | 0.00              |                                               |
+| transport_allowance | decimal(12,2) | YES  |     | 0.00              |                                               |
+| medical_allowance   | decimal(12,2) | YES  |     | 0.00              |                                               |
+| other_allowance     | decimal(12,2) | YES  |     | 0.00              |                                               |
+| created_at          | datetime      | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at          | datetime      | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++---------------------+---------------+------+-----+-------------------+-----------------------------------------------+
+9 rows in set (0.00 sec)
+
++---------------+-------------------------------------+------+-----+-----------+----------------+
+| Field         | Type                                | Null | Key | Default   | Extra          |
++---------------+-------------------------------------+------+-----+-----------+----------------+
+| id            | int                                 | NO   | PRI | NULL      | auto_increment |
+| school_name   | varchar(255)                        | NO   |     | Lyamahoro |                |
+| school_logo   | varchar(255)                        | YES  |     | NULL      |                |
+| ministry      | varchar(255)                        | YES  |     | NULL      |                |
+| shool_adress  | varchar(255)                        | YES  |     | NULL      |                |
+| school_street | int                                 | YES  |     | NULL      |                |
+| school_email  | varchar(120)                        | NO   |     | NULL      |                |
+| school_phone  | varchar(20)                         | NO   |     | NULL      |                |
+| school_status | enum('Active','Inactive','Pending') | NO   |     | Active    |                |
+| school_motto  | varchar(255)                        | YES  |     | NULL      |                |
+| current_ay    | varchar(10)                         | YES  |     | NULL      |                |
+| current_term  | varchar(10)                         | YES  |     | NULL      |                |
+| created_at    | timestamp                           | YES  |     | NULL      |                |
+| deleted_at    | timestamp                           | YES  |     | NULL      |                |
+| updated_at    | timestamp                           | YES  |     | NULL      |                |
++---------------+-------------------------------------+------+-----+-----------+----------------+
+15 rows in set (0.00 sec)
+
++------------+-------------+------+-----+-------------------+-------------------+
+| Field      | Type        | Null | Key | Default           | Extra             |
++------------+-------------+------+-----+-------------------+-------------------+
+| id         | int         | NO   | PRI | NULL              | auto_increment    |
+| student_id | int         | YES  |     | NULL              |                   |
+| phone      | varchar(20) | YES  |     | NULL              |                   |
+| message    | text        | YES  |     | NULL              |                   |
+| status     | varchar(20) | YES  |     | NULL              |                   |
+| response   | text        | YES  |     | NULL              |                   |
+| sent_by    | int         | YES  |     | NULL              |                   |
+| sent_at    | timestamp   | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+-------------+------+-----+-------------------+-------------------+
+8 rows in set (0.00 sec)
+
++------------+---------------------------------+------+-----+-------------------+-------------------+
+| Field      | Type                            | Null | Key | Default           | Extra             |
++------------+---------------------------------+------+-----+-------------------+-------------------+
+| id         | int                             | NO   | PRI | NULL              | auto_increment    |
+| student_id | int                             | YES  |     | 15                |                   |
+| phone      | varchar(20)                     | YES  |     | NULL              |                   |
+| message    | text                            | YES  |     | NULL              |                   |
+| status     | enum('Pending','Sent','Failed') | YES  |     | Pending           |                   |
+| retries    | int                             | YES  |     | 0                 |                   |
+| created_at | timestamp                       | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++------------+---------------------------------+------+-----+-------------------+-------------------+
+7 rows in set (0.00 sec)
+
++----------+----------------------------------+------+-----+---------+----------------+
+| Field    | Type                             | Null | Key | Default | Extra          |
++----------+----------------------------------+------+-----+---------+----------------+
+| sid      | int                              | NO   | PRI | NULL    | auto_increment |
+| class_id | int                              | NO   | MUL | NULL    |                |
+| sName    | varchar(50)                      | NO   |     | NULL    |                |
+| sCreated | datetime                         | YES  |     | NULL    |                |
+| sUpdated | datetime                         | YES  |     | NULL    |                |
+| sStatus  | enum('Active','Canceled','Next') | NO   |     | Active  |                |
++----------+----------------------------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| strID   | int          | NO   | PRI | NULL    | auto_increment |
+| strName | varchar(100) | NO   |     | NULL    |                |
+| ward_id | int          | NO   | MUL | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
++------------------+-------------------------------------------------------------+------+-----+-------------------+-----------------------------+
+| Field            | Type                                                        | Null | Key | Default           | Extra                       |
++------------------+-------------------------------------------------------------+------+-----+-------------------+-----------------------------+
+| spid             | int                                                         | NO   | PRI | NULL              | auto_increment              |
+| student_id       | int                                                         | NO   | MUL | NULL              |                             |
+| academic_year_id | varchar(10)                                                 | NO   | MUL | NULL              |                             |
+| stream_id        | int                                                         | NO   | MUL | NULL              |                             |
+| class_id         | int                                                         | NO   | MUL | NULL              |                             |
+| level            | enum('O-level','A-level')                                   | YES  |     | NULL              |                             |
+| action           | enum('Joined','Promoted','Repeated','Completed','Admitted') | YES  |     | NULL              |                             |
+| action_date_     | date                                                        | YES  |     | NULL              |                             |
+| created_at       | datetime                                                    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED           |
+| updated          | datetime                                                    | YES  |     | NULL              | on update CURRENT_TIMESTAMP |
++------------------+-------------------------------------------------------------+------+-----+-------------------+-----------------------------+
+10 rows in set (0.00 sec)
+
++------------------+---------------------------+------+-----+---------+----------------+
+| Field            | Type                      | Null | Key | Default | Extra          |
++------------------+---------------------------+------+-----+---------+----------------+
+| srsID            | int                       | NO   | PRI | NULL    | auto_increment |
+| student_id       | int                       | NO   | MUL | NULL    |                |
+| route_station_id | int                       | NO   | MUL | NULL    |                |
+| assigned_by      | int                       | YES  | MUL | NULL    |                |
+| assigned_at      | datetime                  | YES  |     | NULL    |                |
+| updated_at       | datetime                  | YES  |     | NULL    |                |
+| status           | enum('active','inactive') | NO   |     | active  |                |
++------------------+---------------------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
++----------------+-----------------------+------+-----+---------+----------------+
+| Field          | Type                  | Null | Key | Default | Extra          |
++----------------+-----------------------+------+-----+---------+----------------+
+| stuID          | int                   | NO   | PRI | NULL    | auto_increment |
+| stuFname       | varchar(100)          | NO   |     | NULL    |                |
+| stuMname       | varchar(100)          | YES  |     | NULL    |                |
+| stuSurname     | varchar(100)          | NO   |     | NULL    |                |
+| stuSex         | enum('Female','Male') | NO   |     | NULL    |                |
+| stuDob         | date                  | YES  |     | NULL    |                |
+| stream_id      | int                   | YES  | MUL | NULL    |                |
+| guardian_id    | int                   | YES  | MUL | NULL    |                |
+| guardian_phone | varchar(15)           | YES  |     | NULL    |                |
+| stuStatus      | varchar(50)           | NO   |     | NULL    |                |
+| indexNo        | varchar(25)           | YES  | UNI | NULL    |                |
++----------------+-----------------------+------+-----+---------+----------------+
+11 rows in set (0.00 sec)
+
++---------------+----------------------------------+------+-----+-------------------+-----------------------------+
+| Field         | Type                             | Null | Key | Default           | Extra                       |
++---------------+----------------------------------+------+-----+-------------------+-----------------------------+
+| subID         | int                              | NO   | PRI | NULL              | auto_increment              |
+| subName       | varchar(50)                      | NO   |     | NULL              |                             |
+| subCode       | varchar(10)                      | NO   | UNI | NULL              |                             |
+| subShort      | varchar(10)                      | YES  |     | NULL              |                             |
+| subCategory   | enum('Core','Option')            | NO   |     | Core              |                             |
+| subLevel      | enum('O-level','A-Level','Both') | NO   |     | Both              |                             |
+| subCurriculum | enum('Old','New','Both')         | NO   |     | Both              |                             |
+| subCreated    | datetime                         | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED           |
+| subUpdated    | datetime                         | YES  |     | NULL              | on update CURRENT_TIMESTAMP |
++---------------+----------------------------------+------+-----+-------------------+-----------------------------+
+9 rows in set (0.00 sec)
+
++------------+-----------------------------------------+------+-----+-------------------+-----------------------------+
+| Field      | Type                                    | Null | Key | Default           | Extra                       |
++------------+-----------------------------------------+------+-----+-------------------+-----------------------------+
+| tID        | varchar(10)                             | NO   | PRI | NULL              |                             |
+| tName      | varchar(45)                             | NO   |     | NULL              |                             |
+| ay_id      | varchar(10)                             | NO   |     | NULL              |                             |
+| tStart     | date                                    | NO   |     | NULL              |                             |
+| tEnd       | date                                    | YES  |     | NULL              |                             |
+| tCategory  | varchar(45)                             | YES  |     | NULL              |                             |
+| tStatus    | enum('Current','Previous','Next','Old') | NO   |     | Previous          |                             |
+| created_at | timestamp                               | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED           |
+| deleted_at | timestamp                               | YES  |     | NULL              |                             |
+| updated_at | datetime                                | YES  |     | NULL              | on update CURRENT_TIMESTAMP |
++------------+-----------------------------------------+------+-----+-------------------+-----------------------------+
+10 rows in set (0.00 sec)
+
++------------+----------------------------------------------------------------------------+------+-----+-------------+----------------+
+| Field      | Type                                                                       | Null | Key | Default     | Extra          |
++------------+----------------------------------------------------------------------------+------+-----+-------------+----------------+
+| tmID       | bigint unsigned                                                            | NO   | PRI | NULL        | auto_increment |
+| lesson     | varchar(15)                                                                | NO   |     | NULL        |                |
+| startat    | time                                                                       | NO   |     | NULL        |                |
+| endat      | varchar(45)                                                                | NO   |     | NULL        |                |
+| periodNo   | int                                                                        | NO   |     | 0           |                |
+| weekDay    | enum('Monday','Tuesday','Wednesday','Thursday','Friday','Satday','Sunday') | NO   |     | NULL        |                |
+| term       | varchar(10)                                                                | NO   |     | NULL        |                |
+| created_at | datetime                                                                   | YES  |     | NULL        |                |
+| updated_at | datetime                                                                   | YES  |     | NULL        |                |
+| deleted_at | datetime                                                                   | YES  |     | NULL        |                |
+| status     | enum('Old','Previous','Active','Next','Preparation','Deleted','Draft')     | NO   |     | Preparation |                |
++------------+----------------------------------------------------------------------------+------+-----+-------------+----------------+
+11 rows in set (0.00 sec)
+
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| tfID        | int         | NO   | PRI | NULL    | auto_increment |
+| student_id  | int         | NO   | MUL | NULL    |                |
+| gurdian_id  | int         | NO   | MUL | NULL    |                |
+| tfResponse  | text        | YES  |     | NULL    |                |
+| tfState     | varchar(50) | YES  |     | NULL    |                |
+| employee_id | int         | NO   | MUL | NULL    |                |
+| tfComment   | text        | YES  |     | NULL    |                |
+| tfStatus    | varchar(50) | NO   |     | NULL    |                |
+| tfCreated   | datetime    | YES  |     | NULL    |                |
+| tfUpdated   | datetime    | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+10 rows in set (0.00 sec)
+
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| trID        | int          | NO   | PRI | NULL    | auto_increment |
+| tour_id     | int          | NO   | MUL | NULL    |                |
+| route_id    | int          | NO   | MUL | NULL    |                |
+| employee_id | int          | NO   | MUL | NULL    |                |
+| vehicle_id  | int          | NO   | MUL | NULL    |                |
+| trDeparture | datetime     | YES  |     | NULL    |                |
+| trArrival   | datetime     | YES  |     | NULL    |                |
+| trPosition  | varchar(100) | YES  |     | NULL    |                |
+| trStatus    | varchar(50)  | NO   |     | Coming  |                |
++-------------+--------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
++-------------+------------------------------------+------+-----+---------+----------------+
+| Field       | Type                               | Null | Key | Default | Extra          |
++-------------+------------------------------------+------+-----+---------+----------------+
+| touID       | int                                | NO   | PRI | NULL    | auto_increment |
+| touName     | varchar(150)                       | NO   |     | NULL    |                |
+| touCategory | enum('Departure','Arrival','Tour') | YES  |     | NULL    |                |
+| touStart    | datetime                           | YES  |     | NULL    |                |
+| touEnd      | datetime                           | YES  |     | NULL    |                |
+| touStatus   | varchar(50)                        | NO   |     | NULL    |                |
++-------------+------------------------------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| veID          | int          | NO   | PRI | NULL    | auto_increment |
+| vePlateNumber | varchar(100) | NO   |     | NULL    |                |
+| veModel       | varchar(100) | NO   |     | NULL    |                |
+| veOwnership   | varchar(100) | NO   |     | NULL    |                |
+| veNamed       | varchar(100) | NO   |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| waID        | int          | NO   | PRI | NULL    | auto_increment |
+| waName      | varchar(100) | NO   |     | NULL    |                |
+| district_id | int          | NO   | MUL | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
